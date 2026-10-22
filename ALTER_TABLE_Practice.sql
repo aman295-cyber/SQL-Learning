@@ -1,6 +1,19 @@
 -- SQL ALTER TABLE: Practical Questions and Answers
--- Database: PostgreSQL
--- Run the questions in sequence in your practice database.
+-- Database: Postgresql
+CREATE TABLE employees (
+    employee_id SERIAL PRIMARY KEY,
+    full_name VARCHAR(100) NOT NULL,
+    age INTEGER,
+    department VARCHAR(50),
+    salary NUMERIC(10,2)
+);
+
+INSERT INTO employees (full_name, age, department, salary)
+VALUES
+    ('Aman Kumar', 23, 'IT', 35000),
+    ('Anushka Sharma', 21, 'HR', 30000),
+    ('Rahul Verma', 25, 'IT', 45000),
+    ('Priya Singh', 22, 'Finance', 40000);
 
 -- Q1. Add an email column with a default value of 'NOT PROVIDED'.
 ALTER TABLE employees
