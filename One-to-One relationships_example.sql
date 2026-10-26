@@ -1,17 +1,9 @@
 
--- ONE-TO-MANY RELATIONSHIPS--Students & Marks
+--ONE-TO-ONE RELATIONSHIPS EXAMPLE-------
 
 CREATE TABLE students(
 student_id SERIAL PRIMARY KEY,
 name VARCHAR(100) NOT NULL
-);
-
-CREATE TABLE marks (
-  mark_id SERIAL PRIMARY KEY,
-  student_id INT,
-  subject VARCHAR(50),
-  marks INT,
-  FOREIGN KEY (student_id) REFERENCES students(student_id)
 );
 
 INSERT INTO students(name)
@@ -20,57 +12,44 @@ VALUES
 ('Vivek Gupta'),
 ('Anita Singh');
 
+SELECT * FROM students;
 
-INSERT INTO marks (student_id, subject, marks)
+
+CREATE TABLE student_profiles (
+student_id INT PRIMARY KEY,
+address TEXT,
+age INT,
+phone VARCHAR(15)
+);
+
+
+INSERT INTO student_profiles(student_id, address, age, phone)
 VALUES
-(1, 'English', 85),
-(1, 'Math', 89), 
-(1, 'Science', 92),
+(1,'DELHI,INDIA',22,9878765422),
+(2,'VARANASI ,INDIA',24,7865120078),
+(3,'BIHAR, INDIA',21,8999456782);
 
-(2, 'English', 80),
-(2, 'Math', 75), 
-(2, 'Science', 78),
 
-(3, 'English', 72),
-(3, 'Math', 70), 
-(3, 'Science', 74);
+ALTER TABLE student_profiles
+ADD CONSTRAINT fk_student_id
+FOREIGN KEY (student_id)
+REFERENCES students(student_id);
 
-SELECT * FROM students s JOIN marks m 
-ON s.student_id=m.student_id;
 
---1)Show each student's name along with their subject and marks.
-
-SELECT s.name,m.subject,m.marks FROM students s JOIN marks m 
-ON s.student_id=m.student_id;
-
---2)Show marks for only "Anita Singh" in all subjects
-
-SELECT s.name,m.subject,m.marks 
-FROM students s JOIN marks m 
-ON s.student_id=m.student_id
-WHERE name ='Anita Singh';
-
---3) Show only those subjects where marks are above 75
-
-SELECT s.name,m.subject,m.marks 
-FROM students s JOIN marks m 
-ON s.student_id=m.student_id
-WHERE marks > 75;
-
---4) Sort all students’ subject marks in descending order of marks.
-
-SELECT s.name,m.subject,m.marks 
-FROM students s JOIN marks m 
-ON s.student_id=m.student_id
-ORDER BY marks DESC;
-
---5)Show each student's average marks
-
-SELECT s.name,ROUND(AVG(m.marks)) AS average_marks
+SELECT 
+s.student_id,
+s.name,
+sp.address,
+sp.age,
+sp.phone
 FROM students s
-JOIN marks m 
-ON s.student_id=m.student_id
-GROUP BY s.student_id,s.name;
+JOIN student_profiles sp
+ON s.student_id =sp.student_id;
+
+
+
+
+
 
 
 
